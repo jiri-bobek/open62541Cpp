@@ -1,5 +1,13 @@
 # Common CMAKE definitions
 
+set(CMAKE_INSTALL_PREFIX /usr/local)
+# the open62541 C library must have been installed
+find_library(OPEN62541 open62541 ${CMAKE_INSTALL_PREFIX}/lib)
+#
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)  
+set(Boost_USE_STATIC_RUNTIME OFF) 
+
 # Find and add Boost libraries
 function(add_boost_lib target)
   if(NOT Boost_FOUND)
