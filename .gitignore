@@ -132,3 +132,4 @@ qrc_*.cpp
 /.qmake.stash
 /.vscode
 /.vs
+/examples/.vs

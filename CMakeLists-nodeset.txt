@@ -1,0 +1,72 @@
+cmake_minimum_required(VERSION 3.0)
+project(tfs-bea-opcua-server)
+set(UA_NAMESPACE_ZERO FULL CACHE STRING "" FORCE)
+set(open62541_TOOLS_DIR "${CMAKE_SOURCE_DIR}/open62541/tools")
+set(open62541_NODESET_DIR "${CMAKE_SOURCE_DIR}/open62541/deps/ua-nodeset")
+set(BEA_NODESET_DIR "${CMAKE_SOURCE_DIR}/bea-model")
+set(UA_GEN_OUTPUT_DIR "${CMAKE_SOURCE_DIR}/src_generated")
+message("Alex:Debug: " ${PROJECT_BINARY_DIR})  
+message("Alex:Debug: " ${UA_GEN_OUTPUT_DIR})
+
+add_subdirectory(open62541)
+
+ua_generate_nodeset_and_datatypes( 
+  NAME "di"
+  FILE_NS "${CMAKE_SOURCE_DIR}/open62541/deps/ua-nodeset/DI/Opc.Ua.Di.NodeSet2.xml"
+  FILE_CSV "${CMAKE_SOURCE_DIR}/open62541/deps/ua-nodeset/DI/OpcUaDiModel.csv"
+  FILE_BSD "${CMAKE_SOURCE_DIR}/open62541/deps/ua-nodeset/DI/Opc.Ua.Di.Types.bsd"
+  NAMESPACE_MAP "2:http://opcfoundation.org/UA/DI/"
+)
+
+add_library(ua_gen_di 
+  STATIC
+      src_generated/open62541/namespace_di_generated.c
+      src_generated/open62541/types_di_generated.c
+      src_generated/open62541/types_di_generated.h
+)
+target_link_libraries(ua_gen_di PUBLIC open62541::open62541)
+
+ua_generate_nodeset_and_datatypes(
+  NAME "adi"
+  FILE_NS "${CMAKE_SOURCE_DIR}/open62541/deps/ua-nodeset/ADI/Opc.Ua.Adi.NodeSet2.xml"
+  FILE_CSV "${CMAKE_SOURCE_DIR}/open62541/deps/ua-nodeset/ADI/OpcUaAdiModel.csv"
+  FILE_BSD "${CMAKE_SOURCE_DIR}/open62541/deps/ua-nodeset/ADI/Opc.Ua.Adi.Types.bsd"
+  NAMESPACE_MAP "3:http://opcfoundation.org/UA/ADI/"
+  DEPENDS "di" 
+)
+
+add_library(ua_gen_adi
+  STATIC
+  src_generated/open62541/namespace_adi_generated.c
+  src_generated/open62541/types_adi_generated.c
+  src_generated/open62541/types_adi_generated.h
+)
+target_link_libraries(ua_gen_adi PUBLIC open62541::open62541)
+
+ua_generate_nodeset_and_datatypes(
+  NAME "bea"
+  FILE_NS "${BEA_NODESET_DIR}/TFS.Bea.Nodeset2.xml"
+  FILE_CSV "${BEA_NODESET_DIR}/Nodes.csv"
+  FILE_BSD "${BEA_NODESET_DIR}/TFS.Bea.Types.bsd"
+  NAMESPACE_MAP "4:https://thermofisher.com/UA/TFS/BEA/"
+  DEPENDS "adi"  
+)
+
+add_library(ua_gen_bea
+  STATIC
+  src_generated/open62541/namespace_bea_generated.c
+  src_generated/open62541/types_bea_generated.c
+  src_generated/open62541/types_bea_generated.h
+)
+target_link_libraries(ua_gen_bea PUBLIC open62541::open62541)
+
+include_directories(${CMAKE_BINARY_DIR}/src_generated/open62541) 
+
+add_executable(bea_server src/main.c)
+
+target_link_libraries(bea_server open62541::open62541)
+target_link_libraries(bea_server ua_gen_di)
+target_link_libraries(bea_server ua_gen_adi)
+target_link_libraries(bea_server ua_gen_bea)
+
+add_dependencies(bea_server open62541-generator-ns-adi) 
