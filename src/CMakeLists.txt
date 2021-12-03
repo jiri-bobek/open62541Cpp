@@ -37,7 +37,12 @@ set(LIB_SOURCES
     serverrepeatedcallback.cpp
     servertimedcallback.cpp
      "ServerRegister.cpp")
-
+if(MSVC)
+add_definitions(/FI"open62541cpp/open62541cppexp.h")
+else()
+    # GCC or Clang
+    add_definitions(-include foo.h)
+endif()
 
 ## library name
 set(OPEN62541_CPP open62541cpp)
@@ -46,6 +51,7 @@ set(OPEN62541_CPP open62541cpp)
 add_library(${OPEN62541_CPP} SHARED ${LIB_SOURCES} )
 set_property(TARGET ${OPEN62541_CPP} PROPERTY POSITION_INDEPENDENT_CODE ON)
 
+add_compile_definitions(UA_DYNAMIC_LINKING_EXPORT)
 target_compile_definitions(${OPEN62541_CPP} PRIVATE -DUA_DYNAMIC_LINKING_EXPORT)
 target_include_directories(open62541cpp PUBLIC ../include)
 set_target_properties(${OPEN62541_CPP} PROPERTIES

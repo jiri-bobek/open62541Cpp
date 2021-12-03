@@ -6,7 +6,7 @@
       "configurationType": "Debug",
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "-T v140,host=x86 ",
+      "cmakeCommandArgs": "-T v140,host=x86 -DPYTHON_EXECUTABLE=\"C:\\Users\\dobindaa\\AppData\\Local\\Programs\\Python\\Python39\\python.exe\" -DUA_ENABLE_SUBSCRIPTIONS_ALARMS_CONDITIONS=ON -DUA_ENABLE_DISCOVERY=ON -DUA_ENABLE_HISTORIZING=ON -DUA_DYNAMIC_LINKING=ON -DUA_DYNAMIC_LINKING_EXPORT=ON ",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "msvc_x86" ],
       "variables": [
@@ -17,8 +17,8 @@
         },
         {
           "name": "UA_ENABLE_DISCOVERY_MULTICAST",
-          "value": "ON,",
-          "type": "STRING"
+          "value": "True",
+          "type": "BOOL"
         },
         {
           "name": "UA_LOGLEVEL",
