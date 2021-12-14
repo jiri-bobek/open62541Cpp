@@ -6,7 +6,7 @@
       "configurationType": "Debug",
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "-T v140,host=x86 -DPYTHON_EXECUTABLE=\"C:\\Users\\dobindaa\\AppData\\Local\\Programs\\Python\\Python39\\python.exe\" -DUA_ENABLE_SUBSCRIPTIONS_ALARMS_CONDITIONS=ON -DUA_ENABLE_DISCOVERY=ON -DUA_ENABLE_HISTORIZING=ON -DUA_DYNAMIC_LINKING=ON -DUA_DYNAMIC_LINKING_EXPORT=ON ",
+      "cmakeCommandArgs": "-T v140,host=x86 -DPYTHON_EXECUTABLE=\"C:\\Users\\dobindaa\\AppData\\Local\\Programs\\Python\\Python39\\python.exe\" -DUA_ENABLE_SUBSCRIPTIONS_ALARMS_CONDITIONS=ON -DUA_ENABLE_DISCOVERY=ON -DUA_ENABLE_HISTORIZING=ON -DUA_DYNAMIC_LINKING=ON -DUA_DYNAMIC_LINKING_EXPORT=ON -DUA_ENABLE_STATUSCODE_DESCRIPTIONS=ON --trace",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "msvc_x86" ],
       "variables": [
@@ -17,13 +17,18 @@
         },
         {
           "name": "UA_ENABLE_DISCOVERY_MULTICAST",
-          "value": "True",
+          "value": "False",
           "type": "BOOL"
         },
         {
           "name": "UA_LOGLEVEL",
           "value": "0",
           "type": "STRING"
+        },
+        {
+          "name": "OPEN62541",
+          "value": "C:/oxsas-source/Open62541Cpp/out/build/x86-Debug/bin/Debug/open62541.lib",
+          "type": "FILEPATH"
         }
       ]
     },

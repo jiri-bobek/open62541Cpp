@@ -19,6 +19,12 @@ set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${VERSION_PATCH})
 
+#set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY C:/oxsas-source/Bin/Oxsas)
+#set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY C:/oxsas-source/Bin/Oxsas)
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY C:/oxsas-source/Bin/Oxsas)
 ## Set the UA log level.
 # IF(CMAKE_BUILD_TYPE MATCHES DEBUG)
 #     add_definitions(-DUA_LOGLEVEL=100)
@@ -81,6 +87,7 @@ add_library(ua_gen_di
   src_generated/open62541/namespace_di_generated.c
   src_generated/open62541/types_di_generated.c
   src_generated/open62541/types_di_generated.h
+  src_generated/open62541/types_di_generated_handling.h
 )
 
  add_dependencies(ua_gen_di open62541::open62541)
@@ -99,6 +106,7 @@ add_library(ua_gen_adi
   src_generated/open62541/namespace_adi_generated.c
   src_generated/open62541/types_adi_generated.c
   src_generated/open62541/types_adi_generated.h
+  src_generated/open62541/types_adi_generated_handling.h
 )
 
 add_dependencies(ua_gen_adi open62541::open62541 ua_gen_di)
@@ -109,14 +117,16 @@ ua_generate_nodeset_and_datatypes(
   FILE_CSV "${oxsas_NODESET_DIR}/Nodes.csv"
   FILE_BSD "${oxsas_NODESET_DIR}/TFS.Bea.Types.bsd"
   NAMESPACE_MAP "4:https://thermofisher.com/UA/TFS/BEA/"
-  DEPENDS "adi"  
+  DEPENDS "adi"
 )
 
 add_library(ua_gen_bea
   STATIC
   src_generated/open62541/namespace_bea_generated.c
-  src_generated/open62541/types_bea_generated.c
+  src_generated/open62541/bea_nodeids.h 
   src_generated/open62541/types_bea_generated.h 
+  src_generated/open62541/types_bea_generated.c 
+  src_generated/open62541/types_bea_generated_handling.h
 )
 
 add_dependencies(ua_gen_bea open62541::open62541 ua_gen_di ua_gen_adi)

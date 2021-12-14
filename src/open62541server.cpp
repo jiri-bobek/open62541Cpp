@@ -18,6 +18,9 @@
 #include <open62541cpp/condition.h>
 #include <open62541cpp/servermethod.h>
 #include <open62541cpp/open62541timer.h>
+#include "../out/build/x86-Debug/src_generated/open62541/namespace_di_generated.h"
+#include "../out/build/x86-Debug/src_generated/open62541/namespace_adi_generated.h"
+#include "../out/build/x86-Debug/src_generated/open62541/namespace_bea_generated.h"
 
 namespace Open62541 {
 Server::ServerMap Server::s_serverMap;
@@ -449,6 +452,16 @@ Server::Server(
     const UA_ByteString& certificate /*= UA_BYTESTRING_NULL*/) {
     m_pServer = UA_Server_new();
     if (m_pServer) {
+
+        if (namespace_di_generated(m_pServer) != UA_STATUSCODE_GOOD ||
+            namespace_adi_generated(m_pServer) != UA_STATUSCODE_GOOD ||
+            namespace_bea_generated(m_pServer) != UA_STATUSCODE_GOOD) {
+            UA_LOG_ERROR(UA_Log_Stdout,
+                         UA_LOGCATEGORY_SERVER,
+                         "Could not add the bea nodeset. "
+                         "Check previous output for any error.");
+        }
+
         m_pConfig = UA_Server_getConfig(m_pServer);
         if (m_pConfig) {
             UA_ServerConfig_setMinimal(m_pConfig, port, &certificate);

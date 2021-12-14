@@ -32,8 +32,9 @@ void DiscoveryServer::configure(int port, const std::string& url) {
     m_pConfig->applicationDescription.applicationType = UA_APPLICATIONTYPE_DISCOVERYSERVER;
     UA_String_clear(&m_pConfig->applicationDescription.applicationUri);
     m_pConfig->applicationDescription.applicationUri = UA_String_fromChars(url.c_str());
+#ifdef UA_ENABLE_DISCOVERY_MULTICAST
     m_pConfig->mdnsEnabled                = true;
-
+#endif
     // See http://www.opcfoundation.org/UA/schemas/1.03/ServerCapabilities.csv
     // timeout in seconds when to automatically remove a registered server from the list,
     // if it doesn't re-register within the given time frame.
