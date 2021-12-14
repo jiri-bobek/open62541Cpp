@@ -1,3 +1,4 @@
 [submodule "open62541"]
 	path = open62541
 	url = https://github.com/apollo2030/open62541.git
+	branch = fixes/1.3
